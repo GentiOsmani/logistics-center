@@ -1,0 +1,19 @@
+{
+  "name": "bg-industrial",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Logistics Center — industrial supply and technical services platform",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node scripts/seed.js",
+    "db:reset": "node scripts/reset-db.js",
+    "user": "node scripts/user.js",
+    "bench": "node scripts/bench.js"
+  },
+  "dependencies": {}
+}
