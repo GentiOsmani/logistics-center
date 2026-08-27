@@ -356,7 +356,7 @@ export function productFormPage(actx, {
                 <span class="dl-row-title">${d.title}</span>
                 <span class="dl-row-meta">${d.filename} · ${Math.round(d.size_bytes / 1024)} KB · ${d.lang}</span>
               </span>
-              <a class="btn btn-outline btn-sm" href="/files/${d.filename}" target="_blank" rel="noopener">Open</a>
+              <a class="btn btn-outline btn-sm" href="${actx.filesOrigin || ''}/files/${d.filename}" target="_blank" rel="noopener">Open</a>
               <form method="post" action="/admin/datasheets/${d.id}/delete">
                 ${csrfField(actx)}
                 <button class="icon-btn" type="submit" aria-label="Delete datasheet">
@@ -365,7 +365,7 @@ export function productFormPage(actx, {
               </form>
             </div>`)}
 
-          <form method="post" action="/admin/datasheets" enctype="multipart/form-data" class="ds-upload mt-4">
+          <form method="post" action="/admin/datasheets" class="ds-upload mt-4">
             ${csrfField(actx)}
             <input type="hidden" name="product_id" value="${product.id}">
             <div class="field m-0">
@@ -374,8 +374,9 @@ export function productFormPage(actx, {
                      placeholder="${product.part_number} datasheet">
             </div>
             <div class="field m-0">
-              <label for="ds-file">PDF file</label>
-              <input class="input" type="file" name="file" id="ds-file" accept="application/pdf" required>
+              <label for="ds-filename">Filename</label>
+              <input class="input" type="text" name="filename" id="ds-filename" maxlength="140"
+                     placeholder="commit the PDF to data/datasheets/ first" required>
             </div>
             <div class="field m-0">
               <label for="ds-lang">Lang</label>
@@ -383,8 +384,12 @@ export function productFormPage(actx, {
                 <option value="en">EN</option><option value="sq">SQ</option><option value="de">DE</option>
               </select>
             </div>
-            <button class="btn btn-dark" type="submit">Upload</button>
+            <button class="btn btn-dark" type="submit">Register</button>
           </form>
+          <p class="muted t-xs mt-2">
+            No live file upload (this account has no card-verified storage) — commit the PDF to
+            <code>data/datasheets/</code> in the repo, then register it here by exact filename.
+          </p>
         </div>
       </div>` : ''}`;
 
@@ -735,7 +740,7 @@ export function datasheetsPage(actx, { datasheets }) {
               <tr>
                 <td>${d.title}</td>
                 <td class="mono">${d.part_number || '—'}</td>
-                <td><a href="/files/${d.filename}" target="_blank" rel="noopener">${d.filename}</a></td>
+                <td><a href="${actx.filesOrigin || ''}/files/${d.filename}" target="_blank" rel="noopener">${d.filename}</a></td>
                 <td class="num">${Math.round(d.size_bytes / 1024)} KB</td>
                 <td class="mono">${d.lang}</td>
                 <td class="actions">

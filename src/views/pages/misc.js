@@ -24,8 +24,10 @@ export function contactPage(ctx, { values = {}, errors = {}, sent = null }) {
     <div class="wrap section-tight">
       <div class="layout layout-360">
         <div>
+          <div id="form-status">
           ${sent ? alert('ok', t('contact_sent_t'), t('contact_sent_d')) : ''}
           ${Object.keys(errors).length ? alert('err', '', t('err_generic')) : ''}
+          </div>
 
           <h2 class="t-h3">${t('contact_form_t')}</h2>
           <form method="post" action="${L(ctx, '/contact')}" class="card p-5 mt-4">

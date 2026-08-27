@@ -19,16 +19,19 @@ export function quotePage(ctx, { items, values = {}, errors = {}, sent = null })
     </div>
 
     <div class="wrap section-tight">
+      <div id="form-status">
       ${sent
         ? alert('ok', t('quote_sent_t'), html`
             ${t('quote_sent_d')} <strong class="mono">${sent}</strong>. ${t('quote_sent_note')}`)
         : ''}
       ${Object.keys(errors).length ? alert('err', '', t('err_generic')) : ''}
+      </div>
 
       <div class="layout layout-340">
         <div>
           <h2 class="t-h3">${t('quote_items')}</h2>
 
+          <div id="quote-items">
           ${items.length ? html`
             <table class="quote-table">
               <thead>
@@ -92,6 +95,7 @@ export function quotePage(ctx, { items, values = {}, errors = {}, sent = null })
                 ${t('nav_products')}${icon('arrow', { size: 16 })}
               </a>
             </div>`}
+          </div>
 
           <form method="post" action="${L(ctx, '/quote')}" class="card p-5 mt-6">
             <input type="text" name="website" tabindex="-1" autocomplete="off"

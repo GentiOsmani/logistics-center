@@ -9,6 +9,25 @@ everything through a built-in admin panel.
 
 ---
 
+## Two ways to run this
+
+**`node server.js`** — the original single-process Node server described
+below. Everything is server-rendered from `node:sqlite`, including search,
+the quote basket, and the admin panel. Good for local development, or for
+hosting on any machine you control.
+
+**Static + Workers** (`build/` and `worker/`) — a split of the same
+application for hosting at **zero cost with no hibernation**: the public
+catalogue is pre-built static HTML published to **GitHub Pages** (a CDN, not
+a server — nothing to sleep), while the admin panel and form submissions run
+on a **Cloudflare Worker** with **D1** and **R2** (request-driven — also
+nothing to sleep). Search and the quote basket move client-side. See
+[`deploy/README.md`](deploy/README.md) for the deployment runbook and
+exactly what changed to make the split work — most of `src/views/`, `src/i18n/`,
+and `src/core/html.js` are reused unmodified by both.
+
+---
+
 ## Why it is built this way
 
 The brief asked for the lowest reasonable browser resource consumption. That ruled

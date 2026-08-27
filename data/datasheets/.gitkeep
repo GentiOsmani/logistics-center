@@ -1,0 +1,4 @@
+Drop datasheet PDFs here and commit them, then register the filename in
+/admin/products/:id on the Worker (or /admin/datasheets). See deploy/README.md
+— this replaces the live-upload flow, which needed Cloudflare R2 (unavailable
+without a card-verified account).

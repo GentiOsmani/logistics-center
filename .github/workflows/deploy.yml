@@ -1,0 +1,53 @@
+name: Build and deploy static site
+
+on:
+  push:
+    branches: [main]
+  # Fired by the Worker (worker/lib/rebuild.js) after an admin save, so the
+  # live site picks up catalogue/inquiry-status changes without a code push.
+  repository_dispatch:
+    types: [content-updated]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time; a newer push/dispatch supersedes an in-flight one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Generate static site
+        run: node build/generate.js
+        env:
+          # Repo variables (Settings → Secrets and variables → Actions → Variables) —
+          # see deploy/README.md for exact values.
+          SITE_ORIGIN: ${{ vars.SITE_ORIGIN }}
+          BASE_PATH: ${{ vars.BASE_PATH }}
+          WORKER_ORIGIN: ${{ vars.WORKER_ORIGIN }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

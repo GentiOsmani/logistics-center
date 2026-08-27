@@ -101,7 +101,7 @@ export function productPage(ctx, {
             <h2 class="t-h4">${t('datasheets')}</h2>
             ${datasheets.length
               ? datasheets.map((d) => html`
-                  <a class="dl-row" href="/files/${d.filename}" download>
+                  <a class="dl-row" href="${ctx.filesOrigin || ''}/files/${d.filename}" download>
                     ${icon('pdf', { size: 22 })}
                     <span class="dl-row-main">
                       <span class="dl-row-title">${d.title}</span>

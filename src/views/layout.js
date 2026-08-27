@@ -11,8 +11,13 @@ const FAVICON = 'data:image/svg+xml,' + encodeURIComponent(
   '<rect x="19" y="18" width="3" height="3" fill="#f5a524"/></svg>',
 );
 
-/** Build a locale-prefixed href. */
-export const L = (ctx, path = '/') => `/${ctx.locale}${path === '/' ? '' : path}`;
+/**
+ * Build a locale-prefixed href. `ctx.basePath` is used by the static
+ * generator (build/context.js) for a GitHub Pages project site served from
+ * `/<repo>/` instead of domain root; it's unset (so a no-op) for the Node
+ * server and the Worker admin panel, both of which serve from root.
+ */
+export const L = (ctx, path = '/') => `${ctx.basePath || ''}/${ctx.locale}${path === '/' ? '' : path}`;
 
 /* --------------------------------------------------------------- header */
 

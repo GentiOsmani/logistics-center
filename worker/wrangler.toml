@@ -1,0 +1,36 @@
+name = "logistics-center-api"
+main = "index.js"
+compatibility_date = "2026-08-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Fill in database_id after running:
+#   npx wrangler d1 create logistics-center
+[[d1_databases]]
+binding = "DB"
+database_name = "logistics-center"
+database_id = "2b8b8bad-1593-4de5-aeb7-c2b44f59d67b"
+
+# R2 is not used: it needs a card-verified Cloudflare account, which wasn't
+# available here. Datasheet PDFs are committed to data/datasheets/ in the
+# repo instead and served as static files by GitHub Pages — see
+# deploy/README.md and build/generate.js.
+
+# Serves public/assets/* (main.css, admin.css, ...) directly at /assets/*,
+# with no code involved — the admin panel is the only thing on the Worker
+# that needs these; the public static site bundles its own copy at build time.
+[assets]
+directory = "../public"
+binding = "ASSETS"
+
+# Secrets (set via `npx wrangler secret put <NAME>`, never committed here):
+#   APP_SECRET        — HMAC key for cookie signing (openssl rand -hex 32)
+#   ADMIN_EMAIL        — seed admin login, first boot only
+#   ADMIN_PASSWORD     — seed admin password, first boot only
+#   PAGES_ORIGIN       — e.g. https://yourname.github.io  (CORS allow-origin for /api/*)
+#   GH_DISPATCH_TOKEN  — fine-grained GitHub PAT, "contents: none, actions: write" on this repo,
+#                         used to fire repository_dispatch after an admin save
+#   GH_REPO            — "yourname/yourrepo", target of the repository_dispatch call
+
+[vars]
+# Non-secret config can go here; left empty on purpose — everything above is
+# either a binding or a secret.

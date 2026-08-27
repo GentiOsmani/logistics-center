@@ -1,7 +1,11 @@
 import { join } from 'node:path';
 import process from 'node:process';
 
-const root = join(import.meta.dirname, '..');
+// import.meta.dirname is undefined in the Cloudflare Workers runtime (the
+// Worker and the static build both import this file for `config.company`/
+// LOCALES, neither needs the filesystem paths below) — guard it rather than
+// crash on import there.
+const root = typeof import.meta.dirname === 'string' ? join(import.meta.dirname, '..') : '.';
 
 export const config = {
   root,

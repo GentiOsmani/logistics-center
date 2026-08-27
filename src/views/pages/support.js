@@ -51,12 +51,14 @@ export function supportPage(ctx, { services, values = {}, errors = {}, sent = nu
       <div class="wrap">
         <div class="layout layout-340">
           <div>
+            <div id="form-status">
             ${sent
               ? alert('ok', t('support_sent_t'), html`
                   ${t('quote_sent_d')} <strong class="mono">${sent}</strong>.
                   ${t('support_sent_note')}`)
               : ''}
             ${Object.keys(errors).length ? alert('err', '', t('err_generic')) : ''}
+            </div>
 
             <h2>${t('support_form_t')}</h2>
             <p class="muted t-sm">${t('required_fields')}</p>

@@ -13,7 +13,10 @@
     "seed": "node scripts/seed.js",
     "db:reset": "node scripts/reset-db.js",
     "user": "node scripts/user.js",
-    "bench": "node scripts/bench.js"
+    "bench": "node scripts/bench.js",
+    "build:local": "node build/generate.js --local",
+    "build": "node build/generate.js",
+    "worker:seed": "node worker/seed.js"
   },
   "dependencies": {}
 }
